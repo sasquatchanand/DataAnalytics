@@ -13,21 +13,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: VisualizationScreen(),
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
+class VisualizationScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _VisualizationScreenState createState() => _VisualizationScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _VisualizationScreenState extends State<VisualizationScreen> {
   int _currentIndex = 0;
   final List<Widget> _screens = [
-    ImportFileScreen(),
-    AnalyzeFileScreen(),
+    ImportAndVisualizeScreen(),
     SettingsScreen(),
   ];
 
@@ -51,11 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.file_upload),
-            label: 'Import',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
-            label: 'Analysis',
+            label: 'Import & Visualize',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
@@ -67,12 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class ImportFileScreen extends StatefulWidget {
+class ImportAndVisualizeScreen extends StatefulWidget {
   @override
-  _ImportFileScreenState createState() => _ImportFileScreenState();
+  _ImportAndVisualizeScreenState createState() => _ImportAndVisualizeScreenState();
 }
 
-class _ImportFileScreenState extends State<ImportFileScreen> {
+class _ImportAndVisualizeScreenState extends State<ImportAndVisualizeScreen> {
   String? filePath;
 
   Future<void> _importFile() async {
@@ -95,84 +90,88 @@ class _ImportFileScreenState extends State<ImportFileScreen> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            'Import File',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: _importFile,
-            child: Text('Choose File', style: TextStyle(fontSize: 24)),
-          ),
-          if (filePath != null)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text('Selected File: $filePath', style: TextStyle(fontSize: 24)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Import & Visualize Data',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _importFile,
+                  child: Text('Choose File', style: TextStyle(fontSize: 24)),
+                ),
+                if (filePath != null)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('Selected File: $filePath', style: TextStyle(fontSize: 24)),
+                  ),
+              ],
             ),
-        ],
-      ),
-    );
-  }
-}
-
-class AnalyzeFileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            'File Analysis',
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 20),
-          // First subsection
-          Text(
-            'Information and analysis of the data',
-            style: TextStyle(fontSize: 28),
-          ),
-          SizedBox(height: 20),
-          // Second subsection
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: 100,
-                color: Colors.blue, // Placeholder for bar chart
+          // Visualization Widgets can be added here
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Data Visualization',
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                          child: Center(
+                            child: Image.asset('assets/image1.jpg', height: 80, fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                          child: Center(
+                            child: Image.asset('assets/image2.png', height: 80, fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          ),
+                          child: Center(
+                            child: Image.asset('assets/image3.png', height: 80, fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: 100,
-                color: Colors.green, // Placeholder for pie chart
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: 100,
-                color: Colors.orange, // Placeholder for histogram
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-          // Third subsection - Displaying images
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: Image.asset('assets/image1.jpg', height: 150, fit: BoxFit.cover),
-              ),
-              Expanded(
-                child: Image.asset('assets/image2.png', height: 150, fit: BoxFit.cover),
-              ),
-              Expanded(
-                child: Image.asset('assets/image3.png', height: 150, fit: BoxFit.cover),
-              ),
-            ],
+            ),
           ),
         ],
       ),
